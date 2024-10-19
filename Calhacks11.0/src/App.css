@@ -5,6 +5,92 @@
   text-align: center;
 }
 
+/*h1{
+  position: sticky;
+  top: 0;
+  margin: 0;
+  padding: 10px;
+  background-color: white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  z-index: 10;
+  padding: 10px;
+}*/
+
+.header {
+  position: relative; /* Keep it relative for standard positioning */
+  top: 0; /* Position at the top */
+  margin: 0; /* Remove any default margin */
+  padding: 10px; /* Add some padding for aesthetics */
+  background-color: #ffffff; /* Background color for visibility */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Optional shadow effect */
+  z-index: 1000;
+}
+
+.text-box {
+  width: 100%;          /* Full width */
+  height: 25px;       /* Adjust height as needed */
+  padding: 10px;       /* Padding for better text placement */
+  font-family: 'Arial', sans-serif;
+  font-size: 20px;     /* Font size */
+  border: 1px solid #ccc;  /* Border color */
+  border-radius: 8px;  /* Rounded corners */
+  resize: none;        /* Disable resizing */
+  margin-bottom: 10px; /* Space between the text box and button */
+}
+
+.submit-button {
+  background-color: #234e40; /* Green background */
+  color: white;              /* White text */
+  padding: 10px 20px;        /* Padding */
+  border: none;              /* No border */
+  border-radius: 8px;        /* Rounded corners */
+  cursor: pointer;           /* Pointer cursor on hover */
+}
+
+.submit-button:hover {
+  background-color: #071a13; /* Darker green on hover */
+  filter: drop-shadow(0 0 1em #646cffaa);
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background-color: #b2e3d4;  /* Light grey background */
+  font-family: Arial, sans-serif; /* Change the font family */
+  color: #062019;                 /* Dark grey text color */
+}
+
+.content {
+  flex: 1; /* Allow the content to take up available space */
+  display: flex;
+  flex-direction: column; /* Stack text area and input vertically */
+  justify-content: flex-end; /* Align content to the bottom */
+  padding: 20px; /* Optional padding */
+}
+
+.text-area {
+  flex: 1; /* Allow the text area to take available space */
+  overflow-y: auto; /* Scroll if content overflows */
+}
+
+/* Text box styles */
+.text-box {
+  position: fixed;
+  bottom: 0;
+  left: 50%; /* Move to the center */
+  transform: translateX(-50%); /* Offset by half its width to center it */
+  width: 80%; /* Width of the text box (adjust as needed) */
+  max-width: 600px; /* Height of the text box */
+  font-size: 16px; /* Font size */
+  padding: 10px; /* Padding inside the text box */
+  border-radius: 4px; /* Rounded corners */
+  border: 1px solid #ccc; /* Border */
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.1); /* Optional shadow */
+}
+
 .logo {
   height: 6em;
   padding: 1.5em;
@@ -35,6 +121,8 @@
 
 .card {
   padding: 2em;
+  margin-top: 20px;
+  flex: 1;
 }
 
 .read-the-docs {
