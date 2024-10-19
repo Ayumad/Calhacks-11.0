@@ -1,5 +1,10 @@
 import { useState } from 'react';
+import { GoogleGenerativeAI } from '@google/generative-ai';
 import './App.css';
+
+// Initialize Google Generative AI
+const genAI = new GoogleGenerativeAI(import.meta.env.VITE_API_KEY); // Use REACT_APP_ prefix for environment variables
+const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
 
 function App() {
   const [inputText, setInputText] = useState('');
@@ -21,23 +26,24 @@ function App() {
 
       // Call Gemini AI (or any NLP API) to get feedback
       try {
-        const response = await fetch('https://api.gemini-ai.com/analyze-speech', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer YOUR_API_KEY`, // Replace with your API key
-          },
-          body: JSON.stringify({ speech: inputText })
-        });
-        const data = await response.json();
-        // Assuming the API returns feedback on content, tone, and pacing
-        setFeedback(`Content: ${data.contentFeedback}, Tone: ${data.toneFeedback}, Pacing: ${data.pacingFeedback}`);
-      } catch (error) {
-        console.error('Error fetching feedback:', error);
-        setFeedback('Sorry, there was an error analyzing your speech. Please try again later.');
-      } finally {
+        const prompt = `Hello! Can you help me improve my speech? Here’s what I want to say: "${inputText}"`; // Use input text as prompt
+        const result = await model.generateContent(prompt);
+        
+        console.log('Generated Content:', result); // Log the result
+        if (result && result.response) {
+          setFeedback(result.response.text());
+        } else {
+          throw new Error("Invalid response structure from API.");
+        }
+    } catch (error: any) {
+        console.error('Error generating content:', error);
+        if (error.response) {
+          console.error('Response data:', error.response.data); // Log response data if available
+        }
+        setFeedback(`Sorry, there was an error generating content: ${error.message || 'Unknown error'}. Please try again later.`);
+    } finally {
         setLoading(false); // Hide loading once feedback is received
-      }
+    }    
     }
   };
 
