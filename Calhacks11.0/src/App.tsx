@@ -1,35 +1,45 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState } from 'react';
+import './App.css';
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [inputText, setInputText] = useState(''); // State for input text
+
+  // Function to clear the input text
+  const clearInput = () => {
+    setInputText('');
+  };
 
   return (
     <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
+      <h1>SpeechSage</h1>
       <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
+        <div className="input-container">
+          <input 
+            type="text" 
+            value={inputText} 
+            onChange={(e) => setInputText(e.target.value)} 
+            placeholder="Use voice input or copy and paste your speech into the text box." 
+          />
+          <button onClick={clearInput} className="clear-button">
+            Clear
+          </button>
+          <button className="mic-button">🎤</button> {/* Microphone button */}
+        </div>
         <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
+          Unlock your communication skills to the next level.
         </p>
+        {/* Output section */}
+        <div className="output-container">
+          <h2>Your Input:</h2>
+          <p>{inputText || "No input yet."}</p> {/* Display input text */}
+        </div>
       </div>
       <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
+        Improve your speech skills with our Speech Helper.
       </p>
     </>
-  )
+  );
 }
 
-export default App
+export default App;
+
