@@ -2,44 +2,67 @@ import { useState } from 'react';
 import './App.css';
 
 function App() {
-  const [inputText, setInputText] = useState(''); // State for input text
+  const [inputText, setInputText] = useState('');
+  const [submittedText, setSubmittedText] = useState('');
 
-  // Function to clear the input text
   const clearInput = () => {
     setInputText('');
+    setSubmittedText('');
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (inputText.trim()) {
+      setSubmittedText(inputText);
+      // Optionally keep the input text for further editing
+    }
+  };
+
+  const handleInputChange = (e) => {
+    const newValue = e.target.value;
+    setInputText(newValue);
+    // Clear the submitted text if the input is empty
+    if (newValue.trim() === '') {
+      setSubmittedText('');
+    }
   };
 
   return (
     <>
-      <h1>SpeechSage</h1>
+      <div className="header">
+        <h1>SpeechSageAI</h1>
+      </div>
       <div className="card">
-        <div className="input-container">
-          <input 
-            type="text" 
-            value={inputText} 
-            onChange={(e) => setInputText(e.target.value)} 
-            placeholder="Use voice input or copy and paste your speech into the text box." 
-          />
-          <button onClick={clearInput} className="clear-button">
-            Clear
-          </button>
-          <button className="mic-button">🎤</button> {/* Microphone button */}
-        </div>
+        <form onSubmit={handleSubmit}>
+          <div className="input-container">
+            <input 
+              type="text" 
+              value={inputText} 
+              onChange={handleInputChange} // Use the new handler
+              placeholder="Use voice input or copy and paste your speech into the text box." 
+            />
+            <button type="button" onClick={clearInput} className="clear-button">
+              Clear
+            </button>
+            <button className="mic-button">🎙️</button>
+          </div>
+          <button type="submit" style={{ display: 'none' }}>Submit</button>
+        </form>
         <p>
           Unlock your communication skills to the next level.
         </p>
-        {/* Output section */}
-        <div className="output-container">
-          <h2>Your Input:</h2>
-          <p>{inputText || "No input yet."}</p> {/* Display input text */}
-        </div>
+        {submittedText && (
+          <div className="output-container">
+            <h2>Your Improved Speech:</h2>
+            <p>{submittedText}</p>
+          </div>
+        )}
       </div>
       <p className="read-the-docs">
-        Improve your speech skills with our Speech Helper.
+        Built @CalHacks 11.0
       </p>
     </>
   );
 }
 
 export default App;
-

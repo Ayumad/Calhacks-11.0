@@ -6,11 +6,12 @@
 }
 
 .card {
-  padding: 10px;
+  padding: 2px;
 
 }
 .read-the-docs {
-  color: #7a2c2c;
+  color: #5a805c
+  ;
 }
 .input-container {
   display: flex;
@@ -42,7 +43,7 @@ input {
   margin-top: 20px; /* Space above the output */
   padding: 10px;
   border: 1px solid #ccc; /* Optional border */
-  border-radius: 5px; /* Rounded corners */
-  background-color: #f9f9f9; /* Light background */
+  border-radius: 10px; /* Rounded corners */
+  background-color: #000000; /* Light background */
 }
 
