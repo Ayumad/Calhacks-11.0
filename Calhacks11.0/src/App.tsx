@@ -4,33 +4,37 @@ import './App.css';
 function App() {
   const [inputText, setInputText] = useState('');
   const [submittedText, setSubmittedText] = useState('');
+  const [feedback, setFeedback] = useState(''); // New state for feedback
 
   const clearInput = () => {
     setInputText('');
     setSubmittedText('');
+    setFeedback(''); // Clear feedback when input is cleared
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (inputText.trim()) {
       setSubmittedText(inputText);
-      // Optionally keep the input text for further editing
+      // Provide feedback based on the submitted text
+      setFeedback(`Great job! Your speech is ${inputText.length} characters long.`);
     }
   };
 
   const handleInputChange = (e) => {
     const newValue = e.target.value;
     setInputText(newValue);
-    // Clear the submitted text if the input is empty
+    // Clear the submitted text and feedback if the input is empty
     if (newValue.trim() === '') {
       setSubmittedText('');
+      setFeedback('');
     }
   };
 
   return (
     <>
       <div className="header">
-        <h1>SpeechSageAI</h1>
+        <h1>SpeechSageAI 🪄</h1>
       </div>
       <div className="card">
         <form onSubmit={handleSubmit}>
@@ -38,7 +42,7 @@ function App() {
             <input 
               type="text" 
               value={inputText} 
-              onChange={handleInputChange} // Use the new handler
+              onChange={handleInputChange}
               placeholder="Use voice input or copy and paste your speech into the text box." 
             />
             <button type="button" onClick={clearInput} className="clear-button">
@@ -55,6 +59,12 @@ function App() {
           <div className="output-container">
             <h2>Your Improved Speech:</h2>
             <p>{submittedText}</p>
+          </div>
+        )}
+        {feedback && ( // Conditional rendering for feedback
+          <div className="feedback-container">
+            <h3>Feedback:</h3>
+            <p>{feedback}</p>
           </div>
         )}
       </div>

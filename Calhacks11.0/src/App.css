@@ -5,45 +5,66 @@
   text-align: center;
 }
 
-.card {
-  padding: 2px;
+.header {
+  overflow: hidden; /* Ensures the content is not revealed until the animation */
+  border-right: .15em solid rgb(0, 0, 0); /* The typwriter cursor */
+  white-space: nowrap; /* Keeps the content on a single line */
+  margin: 0 auto; /* Gives that scrolling effect as the typing happens */
+  letter-spacing: .15em; /* Adjust as needed */
+  animation: 
+    typing 2.25s steps(40, end),
+    blink-caret .75s step-end infinite;
+}
+/* The typing effect */
+@keyframes typing {
+  from { width: 0 }
+  to { width: 100% }
+}
 
+/* The typewriter cursor effect */
+@keyframes blink-caret {
+  from, to { border-color: transparent }
+  75% { border-color: rgb(0, 0, 0); }
 }
+.card {
+  padding: .5px;
+  border-radius: 5px; /* Rounded corners for the card */
+}
+
 .read-the-docs {
-  color: #5a805c
-  ;
+  color: #5a805c;
 }
+
 .input-container {
   display: flex;
+  justify-content: center; /* Center the input and buttons */
   align-items: center;
+  margin-bottom: 20px; /* Space below the input container */
 }
 
 input {
   width: 500px;
-  height: 10px;
+  height: 50px; /* Adjusted height for better usability */
   font-size: 16px;
   padding: 10px;
-  align-items: center;
-  border-radius: 5px;
+  border-radius: 10px;
   border: 1px solid #ccc;
-  margin-right: 10px; /* Space between input and button */
+  margin-right: 5px; /* Space between input and button */
+  text-align: center; /* Center text inside the input */
 }
-
-.clear-button {
-  height: 50px; /* Match input height */
-  font-size: 16px;
-  padding: 0 15px; /* Horizontal padding */
-  border-radius: 5px;
-  border: 1px solid #ccc;
-  background-color: #5a805c; /* Red background for clear */
-  color: white; /* White text */
-  cursor: pointer; /* Change cursor on hover */
+.feedback-container {
+  margin-top: 15px;
+  padding: 10px;
+  border: 1px solid #28a745;
+  border-radius: 4px;
+  background-color: #d4edda;
 }
 .output-container {
   margin-top: 20px; /* Space above the output */
   padding: 10px;
   border: 1px solid #ccc; /* Optional border */
   border-radius: 10px; /* Rounded corners */
-  background-color: #000000; /* Light background */
+  background-color: #5a805c; /* Light background */
+  color: white; /* Text color for better contrast */
 }
 
