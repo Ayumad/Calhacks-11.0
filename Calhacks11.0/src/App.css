@@ -5,38 +5,86 @@
   text-align: center;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+.header {
+  overflow: hidden; /* Ensures the content is not revealed until the animation */
+  border-right: .15em solid rgb(0, 0, 0); /* The typwriter cursor */
+  white-space: nowrap; /* Keeps the content on a single line */
+  margin: 0 auto; /* Gives that scrolling effect as the typing happens */
+  letter-spacing: .15em; /* Adjust as needed */
+  animation: 
+    typing 2.5s steps(40, end) forwards, /* Keep the final state after typing */
+    blink-caret .75s step-end infinite; /* Cursor blinks continuously */
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+/* The typing effect */
+@keyframes typing {
+  from { width: 0; }
+  to { width: 100%; }
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+/* The typewriter cursor effect */
+@keyframes blink-caret {
+  from, to { border-color: transparent; }
+  75% { border-color: rgb(0, 0, 0); }
 }
-
 .card {
-  padding: 2em;
+  padding: .5px;
+  border-radius: 5px; /* Rounded corners for the card */
 }
 
 .read-the-docs {
-  color: #888;
+  color: #5a805c;
+}
+
+.input-container {
+  display: flex;
+  justify-content: center; /* Center the input and buttons */
+  align-items: center;
+  margin-bottom: 20px; /* Space below the input container */
+}
+
+input {
+  width: 500px;
+  height: 50px; /* Adjusted height for better usability */
+  font-size: 16px;
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  margin-right: 5px; /* Space between input and button */
+  text-align: center; /* Center text inside the input */
+}
+.clear-button {
+  background: #5a805c;
+  border: 1px solid #ccc;
+  border-radius: 12px;
+  padding: 5;
+  cursor: pointer;
+  
+
+}
+.mic-button {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+.mic-image {
+  width: 64px;
+  height: 64px;
+}
+.feedback-container {
+  margin-top: 10px;
+  padding: 10px;
+  border: 1px solid #28a745;
+  border-radius: 4px;
+  background-color: #d4edda;
+}
+.output-container {
+  margin-top: 20px; /* Space above the output */
+  padding: 10px;
+  border: 1px solid #ccc; /* Optional border */
+  border-radius: 10px; /* Rounded corners */
+  background-color: #5a805c; /* Light background */
+  color: white; /* Text color for better contrast */
+  
 }
