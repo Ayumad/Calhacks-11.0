@@ -32,6 +32,12 @@
   border-radius: 5px; /* Rounded corners for the card */
 }
 
+.please{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .read-the-docs {
   color: #5a805c;
 }

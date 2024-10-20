@@ -41,12 +41,19 @@ function App() {
 
   const handleSubmit = async (e: { preventDefault: () => void; }) => {
     e.preventDefault();
+    let combinedEmotionsText = '';
     if (inputText.trim()) {
       setSubmittedText(inputText);
       setLoading(true);
-
+      if (topEmotions.length > 0) {
+      combinedEmotionsText = ` Here are the emotions detected: ${topEmotions
+        .map((emotion) => `${emotion.name} (${(emotion.score * 100).toFixed(2)}%)`)
+        .join(', ')}.`;
+      }
+    }
       try {
-        const prompt = `Hello! Can you help me improve my speech? Here’s what I want to say: "${inputText}"`;
+        const prompt = `You are an expert speechwriter and analyst. Your role is to review my speech transcript and provide detailed feedback to enhance its content and effectiveness. The background is that I am preparing this speech for an important event and want to ensure it is well-organized, clear, and impactful. Make sure not to utilize markdown in your response and consider the emotions you are given when returning feedback."${inputText}"`;
+        const fullprompt = `${prompt}${combinedEmotionsText}`;
         const result = await model.generateContent(prompt);
         
         console.log('Generated Content:', result);
@@ -61,7 +68,6 @@ function App() {
       } finally {
         setLoading(false);
       }
-    }
   };
 
   const handleInputChange = (e: { target: { value: any; }; }) => {
@@ -158,7 +164,11 @@ function App() {
         <h1>SpeechSage🪄</h1>
       </div>
       <div className="card">
-        <form onSubmit={handleSubmit}>
+        <div className="please">
+          <button onClick={isRecording ? stopRecording : startRecording}>
+  {isRecording ? '🛑' : '▶️'}
+</button>
+          <form onSubmit={handleSubmit}>
           <div className="input-container">
             <input 
               type="text" 
@@ -169,11 +179,14 @@ function App() {
             <button type = "button" onClick= {clearInput} className = "clear-button" >
               Clear
             </button>
-            <button onClick={isRecording ? stopRecording : startRecording}>
-  {isRecording ? '🛑' : '▶️'}
-</button>
+            
           </div>
-          <div>
+
+          <button type="submit" style={{ display: 'none' }}>Submit</button>
+        </form>
+        </div>
+        
+                  <div>
             {audioURL && (
               <div>
                 <h3>Recorded Audio:</h3>
@@ -183,8 +196,6 @@ function App() {
               </div>
             )}
           </div>
-          <button type="submit" style={{ display: 'none' }}>Submit</button>
-        </form>
         <p>
           Unlock your communication skills to the next level.
         </p>
