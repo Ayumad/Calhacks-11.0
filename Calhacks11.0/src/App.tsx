@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import './App.css';
 import { processAudio } from './humeService'; // Import the processAudio function
@@ -16,71 +16,67 @@ interface Prediction {
 }
 
 // Initialize Google Generative AI
-const genAI = new GoogleGenerativeAI(import.meta.env.VITE_API_KEY); // Use REACT_APP_ prefix for environment variables
+const genAI = new GoogleGenerativeAI(import.meta.env.VITE_API_KEY);
 const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
 
 function App() {
   const [inputText, setInputText] = useState('');
   const [submittedText, setSubmittedText] = useState('');
-  const [feedback, setFeedback] = useState(''); // New state for feedback
-  const [loading, setLoading] = useState(false); // State for loading feedback
-  const [topEmotions, setTopEmotions] = useState<Emotion[]>([]); // State for top emotions
+  const [feedback, setFeedback] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [topEmotions, setTopEmotions] = useState<Emotion[]>([]);
   const [isRecording, setIsRecording] = useState(false);
   const [audioURL, setAudioURL] = useState('');
+  const [isProcessed, setIsProcessed] = useState(false); // New state to track if audio is processed
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const audioChunksRef = useRef<Blob[]>([]);
+
   const clearInput = () => {
     setInputText('');
     setSubmittedText('');
-    setFeedback(''); // Clear feedback when input is cleared
+    setFeedback('');
+    setTopEmotions([]); // Clear emotions when input is cleared
+    setIsProcessed(false); // Reset processed state
   };
 
   const handleSubmit = async (e: { preventDefault: () => void; }) => {
     e.preventDefault();
     if (inputText.trim()) {
       setSubmittedText(inputText);
-      setLoading(true); // Show loading while waiting for response
+      setLoading(true);
 
-      // Call Gemini AI (or any NLP API) to get feedback
       try {
-        const prompt = `Hello! Can you help me improve my speech? Here’s what I want to say: "${inputText}"`; // Use input text as prompt
+        const prompt = `Hello! Can you help me improve my speech? Here’s what I want to say: "${inputText}"`;
         const result = await model.generateContent(prompt);
         
-        console.log('Generated Content:', result); // Log the result
+        console.log('Generated Content:', result);
         if (result && result.response) {
           setFeedback(result.response.text());
         } else {
           throw new Error("Invalid response structure from API.");
         }
-    } catch (error: any) {
+      } catch (error: any) {
         console.error('Error generating content:', error);
-        if (error.response) {
-          console.error('Response data:', error.response.data); // Log response data if available
-        }
         setFeedback(`Sorry, there was an error generating content: ${error.message || 'Unknown error'}. Please try again later.`);
-    } finally {
-        setLoading(false); // Hide loading once feedback is received
-    }    
+      } finally {
+        setLoading(false);
+      }
     }
   };
 
   const handleInputChange = (e: { target: { value: any; }; }) => {
     const newValue = e.target.value;
     setInputText(newValue);
-    // Clear the submitted text and feedback if the input is empty
     if (newValue.trim() === '') {
       setSubmittedText('');
       setFeedback('');
+      setTopEmotions([]);
+      setIsProcessed(false); // Reset processed state
     }
   };
 
-  // Function to process raw predictions and get top emotions
   const getTopEmotions = (rawData: any): Emotion[] => {
-    // Extract all predictions
-    const allPredictions = rawData[0].results.predictions[0].models.prosody
-      .groupedPredictions[0].predictions;
-
-    // Combine all emotions and aggregate their scores
+    const allPredictions = rawData[0].results.predictions[0].models.prosody.groupedPredictions[0].predictions;
     const emotionMap = new Map<string, number>();
 
     allPredictions.forEach((prediction: Prediction) => {
@@ -90,11 +86,10 @@ function App() {
       });
     });
 
-    // Convert map to array and sort by score
     const sortedEmotions = Array.from(emotionMap.entries())
       .map(([name, score]) => ({
         name,
-        score: score / allPredictions.length // Calculate average score
+        score: score / allPredictions.length
       }))
       .sort((a, b) => b.score - a.score)
       .slice(0, 10);
@@ -102,7 +97,6 @@ function App() {
     return sortedEmotions;
   };
 
-  // Function to start recording
   const startRecording = async () => {
     setAudioURL('');
     audioChunksRef.current = [];
@@ -120,16 +114,14 @@ function App() {
       const url = URL.createObjectURL(audioBlob);
       setAudioURL(url);
 
-      // Upload audio and get the audio URL
       const audioFileUrl = await uploadAudio(audioBlob);
-      // Call the function to process the audio file
       await fetchPredictions(audioFileUrl);
+      setIsProcessed(true); // Set processed state to true after predictions are fetched
     };
 
     mediaRecorderRef.current.start();
   };
 
-  // Function to stop recording
   const stopRecording = () => {
     setIsRecording(false);
     mediaRecorderRef.current?.stop();
@@ -139,29 +131,24 @@ function App() {
     const audioFile = new File([audioBlob], "audio.wav", { type: 'audio/wav' });
     const audioRef = ref(storage, `audio/${audioFile.name}`);
 
-    // Upload the audio file
     await uploadBytes(audioRef, audioFile);
-
-    // Get the public URL for the uploaded audio file
     const audioUrl = await getDownloadURL(audioRef);
     console.log('Audio URL:', audioUrl);
-    return audioUrl; // Return the audio URL
-  }; 
+    return audioUrl;
+  };
 
   const fetchPredictions = async (audioUrl: string) => {
     setLoading(true);
     try {
-      const predictions = await processAudio(audioUrl); // Pass the audio URL
-
+      const predictions = await processAudio(audioUrl);
       if (predictions) {
-        // Process the predictions to get top emotions
         const emotions = getTopEmotions(predictions);
-        setTopEmotions(emotions); // Store top emotions
+        setTopEmotions(emotions);
       }
     } catch (error) {
       console.error("Error fetching predictions:", error);
     } finally {
-      setLoading(false); // Ensure loading is set to false after fetching
+      setLoading(false);
     }
   };
 
@@ -179,10 +166,10 @@ function App() {
               onChange={handleInputChange}
               placeholder="Use voice input or copy and paste your speech into the text box." 
             />
-            <button type="button" onClick={clearInput} className="clear-button">
+            <button type = "button" onClick= {clearInput} className = "clear-button" >
               Clear
             </button>
-            <button onClick={startRecording} disabled={isRecording}>
+            <button onClick = {startRecording} disabled = {isRecording}>
               ▶️
             </button>
             <button onClick={stopRecording} disabled={!isRecording}>
@@ -190,7 +177,6 @@ function App() {
             </button>
           </div>
           <div>
-            {/* Audio Player to Test Recorded Audio URL */}
             {audioURL && (
               <div>
                 <h3>Recorded Audio:</h3>
@@ -213,7 +199,7 @@ function App() {
         )}
         {loading ? (
           <p>Analyzing your speech... 🔄</p>
-        ) : feedback && ( // Conditional rendering for feedback
+        ) : feedback && (
           <div className="feedback-container">
             <h3>Feedback:</h3>
             <p>{feedback}</p>
@@ -224,11 +210,9 @@ function App() {
         <h2>Emotions detected from your voice:</h2>
         {loading ? (
           <p>Loading predictions...</p>
-        ) : (
+        ) : isProcessed ? ( // Check if audio has been processed
           <div className="output-container">
-            {/* <h2>Raw Predictions:</h2>
-            <pre>{JSON.stringify(rawPredictions, null, 2)}</pre> Output raw predictions */}
-            <h2>   Top 10 Emotions:</h2>
+            <h2>Top 10 Emotions:</h2>
             {topEmotions.length > 0 ? (
               <ul>
                 {topEmotions.map((emotion, index) => (
@@ -239,6 +223,8 @@ function App() {
               <p>No emotions detected.</p>
             )}
           </div>
+        ) : (
+          <p>Please record audio to see emotions detected.</p> // Prompt to record audio
         )}
       </div>
       <p className="read-the-docs">
@@ -249,3 +235,4 @@ function App() {
 }
 
 export default App;
+

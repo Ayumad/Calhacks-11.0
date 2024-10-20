@@ -12,18 +12,19 @@
   margin: 0 auto; /* Gives that scrolling effect as the typing happens */
   letter-spacing: .15em; /* Adjust as needed */
   animation: 
-    typing 10s steps(40, end),
-    blink-caret .75s step-end infinite;
+    typing 2.5s steps(40, end) forwards, /* Keep the final state after typing */
+    blink-caret .75s step-end infinite; /* Cursor blinks continuously */
 }
+
 /* The typing effect */
 @keyframes typing {
-  from { width: 0 }
-  to { width: 100% }
+  from { width: 0; }
+  to { width: 100%; }
 }
 
 /* The typewriter cursor effect */
 @keyframes blink-caret {
-  from, to { border-color: transparent }
+  from, to { border-color: transparent; }
   75% { border-color: rgb(0, 0, 0); }
 }
 .card {
@@ -72,7 +73,7 @@ input {
   height: 64px;
 }
 .feedback-container {
-  margin-top: 15px;
+  margin-top: 10px;
   padding: 10px;
   border: 1px solid #28a745;
   border-radius: 4px;
@@ -85,4 +86,5 @@ input {
   border-radius: 10px; /* Rounded corners */
   background-color: #5a805c; /* Light background */
   color: white; /* Text color for better contrast */
+  
 }
