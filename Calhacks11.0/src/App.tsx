@@ -4,7 +4,7 @@ import './App.css';
 
 // Initialize Google Generative AI
 const genAI = new GoogleGenerativeAI(import.meta.env.VITE_API_KEY); // Use REACT_APP_ prefix for environment variables
-const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
+const model = genAI.getGenerativeModel({ model: 'gemini-1.5-pro' });
 
 function App() {
   const [inputText, setInputText] = useState('');
@@ -26,7 +26,31 @@ function App() {
 
       // Call Gemini AI (or any NLP API) to get feedback
       try {
-        const prompt = `Hello! Can you help me improve my speech? Here’s what I want to say: "${inputText}"`; // Use input text as prompt
+        const prompt = 
+`"You are an expert speechwriter and analyst. Your role is to review my speech transcript and provide detailed feedback to enhance its content and effectiveness. The background is that I am preparing this speech for an important event and want to ensure it is well-organized, clear, and impactful.
+
+Please structure your response as follows:
+
+Introduction:
+
+Summarize your understanding of the main message and purpose of my speech.
+Content Analysis:
+
+Evaluate the clarity and coherence of my ideas.
+Assess the strength and persuasiveness of my arguments.
+Identify any gaps or redundancies in the content.
+Organization and Structure:
+
+Analyze the flow of the speech, including the introduction, body, and conclusion.
+Comment on the effectiveness of transitions between points.
+Suggestions for Improvement:
+
+Provide specific recommendations to enhance content, such as refining arguments, adding supporting details, or reorganizing sections.
+Highlight any areas where additional information or emphasis is needed.
+Revised Speech:
+
+Offer an updated version of the speech that incorporates your suggestions.
+Please include all these elements in your response to help me refine my speech effectively.""${inputText}"`; // Use input text as prompt
         const result = await model.generateContent(prompt);
         
         console.log('Generated Content:', result); // Log the result
