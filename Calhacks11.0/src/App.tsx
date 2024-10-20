@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import './App.css';
+import Mic from './assets/mic.png'
 
 function App() {
   const [inputText, setInputText] = useState('');
@@ -34,7 +35,7 @@ function App() {
   return (
     <>
       <div className="header">
-        <h1>SpeechSageAI 🪄</h1>
+        <h1>SpeechSage 🪄</h1>
       </div>
       <div className="card">
         <form onSubmit={handleSubmit}>
@@ -48,7 +49,9 @@ function App() {
             <button type="button" onClick={clearInput} className="clear-button">
               Clear
             </button>
-            <button className="mic-button">🎙️</button>
+            <button className="mic-button">
+              <img src={Mic} alt="Mic" className="mic-image" />
+            </button>
           </div>
           <button type="submit" style={{ display: 'none' }}>Submit</button>
         </form>
