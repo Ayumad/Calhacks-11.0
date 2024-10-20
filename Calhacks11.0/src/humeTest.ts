@@ -51,7 +51,7 @@ async function testProcessAudio() {
     const topEmotions = getTopEmotions(predictions);
 
     // Log the top emotions in a more readable format
-    console.log('Top 10 Emotions:');
+    console.log('   Top 10 Emotions:');
     topEmotions.forEach((emotion, index) => {
       console.log(`${index + 1}. ${emotion.name}: ${(emotion.score * 100).toFixed(2)}%`);
     });
