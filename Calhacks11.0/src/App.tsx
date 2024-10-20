@@ -155,7 +155,7 @@ function App() {
   return (
     <>
       <div className="header">
-        <h1>SpeechSageAI 🪄</h1>
+        <h1>SpeechSage🪄</h1>
       </div>
       <div className="card">
         <form onSubmit={handleSubmit}>
@@ -169,12 +169,9 @@ function App() {
             <button type = "button" onClick= {clearInput} className = "clear-button" >
               Clear
             </button>
-            <button onClick = {startRecording} disabled = {isRecording}>
-              ▶️
-            </button>
-            <button onClick={stopRecording} disabled={!isRecording}>
-              🛑
-            </button>
+            <button onClick={isRecording ? stopRecording : startRecording}>
+  {isRecording ? '🛑' : '▶️'}
+</button>
           </div>
           <div>
             {audioURL && (
