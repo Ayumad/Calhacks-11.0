@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import './App.css';
+import Mic from './assets/mic.png'
 import { processAudio } from './humeService'; // Import the processAudio function
 import { storage } from './firebase'; // Import the storage object from firebase
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
@@ -155,7 +156,7 @@ function App() {
   return (
     <>
       <div className="header">
-        <h1>SpeechSage🪄</h1>
+        <h1>SpeechSage 🪄</h1>
       </div>
       <div className="card">
         <form onSubmit={handleSubmit}>
@@ -169,19 +170,11 @@ function App() {
             <button type = "button" onClick= {clearInput} className = "clear-button" >
               Clear
             </button>
+            <button className="mic-button">
+              <img src={Mic} alt="Mic" className="mic-image" />
+            </button>
             <button onClick={isRecording ? stopRecording : startRecording}>
   {isRecording ? '🛑' : '▶️'}
-</button>
-          </div>
-          <div>
-            {audioURL && (
-              <div>
-                <h3>Recorded Audio:</h3>
-                <audio controls src={audioURL}>
-                  Your browser does not support the audio element.
-                </audio>
-              </div>
-            )}
           </div>
           <button type="submit" style={{ display: 'none' }}>Submit</button>
         </form>
