@@ -83,7 +83,7 @@ function App() {
         </p>
         {submittedText && (
           <div className="output-container">
-            <h2>Your Improved Speech:</h2>
+            <h2>Your Speech:</h2>
             <p>{submittedText}</p>
           </div>
         )}

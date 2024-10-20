@@ -52,6 +52,25 @@ input {
   margin-right: 5px; /* Space between input and button */
   text-align: center; /* Center text inside the input */
 }
+.clear-button {
+  background: #5a805c;
+  border: 1px solid #ccc;
+  border-radius: 12px;
+  padding: 5;
+  cursor: pointer;
+  
+
+}
+.mic-button {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+.mic-image {
+  width: 64px;
+  height: 64px;
+}
 .feedback-container {
   margin-top: 15px;
   padding: 10px;
@@ -67,4 +86,3 @@ input {
   background-color: #5a805c; /* Light background */
   color: white; /* Text color for better contrast */
 }
-
