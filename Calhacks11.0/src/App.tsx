@@ -39,6 +39,35 @@ function App() {
     setIsProcessed(false); // Reset processed state
   };
 
+  const startTranscription = () => {
+  const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+  recognition.continuous = false; // Stop automatically after speaking
+  recognition.interimResults = false; // Only return final results
+  recognition.lang = 'en-US'; // Set the language for recognition
+
+  recognition.onstart = () => {
+    setIsRecording(true); // Update recording state to true
+  };
+
+  recognition.onresult = (event) => {
+    const transcript = event.results[0][0].transcript;
+    setInputText(transcript); // Set the input text with the transcribed speech
+    setIsRecording(false); // Update recording state to false
+  };
+
+  recognition.onerror = (event) => {
+    console.error('Speech recognition error', event.error);
+    setIsRecording(false); // Update recording state to false
+  };
+
+  recognition.onend = () => {
+    setIsRecording(false); // Ensure the recording state is reset
+  };
+
+  recognition.start();
+};
+
+
   const handleSubmit = async (e: { preventDefault: () => void; }) => {
     e.preventDefault();
     let combinedEmotionsText = '';
